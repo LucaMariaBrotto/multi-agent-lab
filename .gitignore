@@ -1,0 +1,17 @@
+# Virtual environment 
+VENV/
+venv/
+env/
+
+# Credentials and API keys
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Mac system files
+.DS_Store
+
+# Virtual environment configuration file
+pyvenv.cfg
