@@ -25,7 +25,7 @@ model = ChatOpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
     model="gpt-4o-mini",
-    temperature=0.1,  # 👉 basso = più deterministico (meglio per tool)
+    temperature=0.1,  # basso = più deterministico (meglio per tool)
     max_tokens=1000
 )
 
