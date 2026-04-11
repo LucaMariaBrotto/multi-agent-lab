@@ -1,4 +1,6 @@
 # Currently applying the "Agents as Tools" Pattern
+# In order to create a virtual environment, write in terminal: 
+# python3 -m venv venv && source venv/bin/activate
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -51,7 +53,7 @@ agent = create_openai_tools_agent(model, tools, prompt)
 
 # L'AgentExecutor is what allows us to run the orchestrator agent with the tools.
 # It will handle the logic of when to call each tool based on the prompt and the input.
-orchestrator_executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
+orchestrator_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
 # Test
 # ... (tieni tutta la parte iniziale degli import, strumenti e definizione orchestrator_executor)
