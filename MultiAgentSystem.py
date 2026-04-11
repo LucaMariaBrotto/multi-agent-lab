@@ -5,6 +5,10 @@ from langchain_openai import ChatOpenAI
 from langchain.tools import tool
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain import hub # in order to download the prompt template from the hub
+from rich.console import Console
+from rich.markdown import Markdown
+
+console = Console()
 
 load_dotenv()
 
@@ -47,13 +51,42 @@ agent = create_openai_tools_agent(model, tools, prompt)
 
 # L'AgentExecutor is what allows us to run the orchestrator agent with the tools.
 # It will handle the logic of when to call each tool based on the prompt and the input.
-orchestrator_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+orchestrator_executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
 
 # Test
-response = orchestrator_executor.invoke({
-    "input": "Plan a 3-day trip to Rome. I'm coming from London with a budget of $2000. Calculate travel costs and time, and suggest must-see attractions and restaurants."
-})
+# ... (tieni tutta la parte iniziale degli import, strumenti e definizione orchestrator_executor)
 
-print(response["output"])
+print("-" * 50)
+print("TRAVEL PLANNER AI - Terminal Mode")
+print("Scrivi la tua richiesta e premi INVIO per pianificare.")
+print("-" * 50)
+
+while True:
+    # Il programma si ferma qui finché non premi Invio
+    user_prompt = input("\nRichiesta > ")
+    
+    # Se premi Invio senza scrivere nulla, lo script ignora e riparte
+    if not user_prompt.strip():
+        continue
+        
+    # Gestiamo l'uscita solo se scrivi esplicitamente qualcosa come 'exit'
+    if user_prompt.lower() in ["exit", "quit"]:
+        break
+
+    print("\n[Pensando...]")
+    
+    try:
+        response = orchestrator_executor.invoke({"input": user_prompt})
+        
+        # Creo un oggetto Markdown dal testo della risposta
+        # Questo rimuoverà gli asterischi e li convertirà in formattazione visiva
+        md = Markdown(response["output"])
+
+        print("\n" + "─" * 30)
+        console.print(md)
+        print("─" * 30)
+        
+    except Exception as e:
+        print(f"\nErrore durante l'elaborazione: {e}")
 
 
