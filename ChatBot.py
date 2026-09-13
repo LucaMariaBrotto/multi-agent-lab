@@ -5,24 +5,24 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 
-# Il "Cervello"
+# The "Brain"
 model = ChatOpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
     model="gpt-4o-mini"
 )
 
-# Il "System Prompt" (L'identità)
-system_prompt = "Sei un tutor di programmazione paziente e utile. Spiega i concetti in modo semplice."
+# The "System Prompt" (The Identity)
+system_prompt = "You are a patient and helpful programming tutor. Explain concepts in a simple way."
 
-# Test dell'agente con un messaggio di sistema e uno dell'utente
+# Testing the agent with a system message and a user message
 messages = [
     SystemMessage(content=system_prompt),
-    HumanMessage(content="Cos'è una variabile in Python?")
+    HumanMessage(content="What is a variable in Python?")
 ]
 
-print("L'agente sta riflettendo...")
+print("The agent is thinking...")
 response = model.invoke(messages)
 
-print("\nRisposta dell'Agente:")
+print("\nAgent's Response:")
 print(response.content)

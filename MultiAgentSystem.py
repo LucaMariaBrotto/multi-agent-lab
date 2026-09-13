@@ -30,7 +30,7 @@ def plan_logistics_agent(trip_request: str) -> str:
     - Consider time zones, weather, and practical constraints
     Always provide short, clear, practical logistics information."""
     
-    return model.invoke(f"Sei un esperto di logistica. Pianifica: {trip_request}").content
+    return model.invoke(f"You are a logistics expert. Plan: {trip_request}").content
 
 # Create specialized recommendations agent
 @tool
@@ -41,7 +41,7 @@ def get_recommendations_agent(trip_details: str) -> str:
     - Recommend cultural activities, events, and local experiences
     - Provide insights about local customs, best times to visit, and hidden gems
     Always provide brief, engaging, personalized recommendations."""
-    return model.invoke(f"Sei un esperto di raccomandazioni. Suggerisci per: {trip_details}").content
+    return model.invoke(f"You are a recommendations expert. Suggest for: {trip_details}").content
 
 # Create the orchestrator agent that combines both specialists
 
@@ -51,37 +51,37 @@ prompt = hub.pull("hwchase17/openai-tools-agent")
 
 agent = create_openai_tools_agent(model, tools, prompt)
 
-# L'AgentExecutor is what allows us to run the orchestrator agent with the tools.
+# The AgentExecutor is what allows us to run the orchestrator agent with the tools.
 # It will handle the logic of when to call each tool based on the prompt and the input.
 orchestrator_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
 # Test
-# ... (tieni tutta la parte iniziale degli import, strumenti e definizione orchestrator_executor)
+# ... (keep all the initial part of imports, tools and orchestrator_executor definition)
 
 print("-" * 50)
 print("TRAVEL PLANNER AI - Terminal Mode")
-print("Scrivi la tua richiesta e premi INVIO per pianificare.")
+print("Type your request and press ENTER to plan.")
 print("-" * 50)
 
 while True:
-    # Il programma si ferma qui finché non premi Invio
-    user_prompt = input("\nRichiesta > ")
+    # The program pauses here until you press Enter
+    user_prompt = input("\nRequest > ")
     
-    # Se premi Invio senza scrivere nulla, lo script ignora e riparte
+    # If you press Enter without writing anything, the script ignores it and restarts
     if not user_prompt.strip():
         continue
         
-    # Gestiamo l'uscita solo se scrivi esplicitamente qualcosa come 'exit'
+    # We handle the exit only if you explicitly write something like 'exit' or 'quit'
     if user_prompt.lower() in ["exit", "quit"]:
         break
 
-    print("\n[Pensando...]")
+    print("\n[Thinking...]")
     
     try:
         response = orchestrator_executor.invoke({"input": user_prompt})
         
-        # Creo un oggetto Markdown dal testo della risposta
-        # Questo rimuoverà gli asterischi e li convertirà in formattazione visiva
+        # Create a Markdown object from the response text
+        # This will remove the asterisks and convert them into visual formatting
         md = Markdown(response["output"])
 
         print("\n" + "─" * 30)
@@ -89,6 +89,4 @@ while True:
         print("─" * 30)
         
     except Exception as e:
-        print(f"\nErrore durante l'elaborazione: {e}")
-
-
+        print(f"\nError during processing: {e}")
